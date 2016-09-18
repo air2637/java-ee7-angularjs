@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="persons">
+
+<head>
+    <title>javaee7-angular</title>
+    <!-- build:css css/third-party.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/dependencies/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/dependencies/css/ng-grid.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css css/application.css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <!-- endbuild -->
+    <!-- build:js lib/third-party.js -->
+    <!-- bower:js -->
+    <script src="lib/dependencies/angular.min.js"></script>
+    <script src="lib/dependencies/angular-resource.min.js"></script>
+    <script src="lib/dependencies/jquery.min.js"></script>
+    <script src="lib/dependencies/ui-bootstrap-tpls.min.js"></script>
+    <script src="lib/dependencies/ng-grid.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js script/all.js -->
+    <script src="script/person.js"></script>
+    <!-- endbuild -->
+</head>
+
+<body>
+    <h1>My Java-AngularJS Project</h1>
+    <div class="grid" ng-controller="personsListController">
+        <div>
+            <h3>List Persons</h3>
+        </div>
+        <div class="gridStyle" ng-grid="gridOptions">
+        </div>
+        <pagination direction-links="true" boundary-links="true" total-items="persons.totalResults" item-per-page="persons.pageSize" ng-model="persons.currentPage" ng-change="refreshGrid()">
+        </pagination>
+    </div>
+</div>
+</body>
+
+</html>
