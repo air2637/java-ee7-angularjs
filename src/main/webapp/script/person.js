@@ -1,8 +1,8 @@
 var app =
     angular.module('persons', ['ngResource', 'ngGrid', 'ui.bootstrap']);
 
-app.factory('personService',  function($resource){
-	return $resource('resources/persons/:id');
+app.factory('personService', function($resource) {
+    return $resource('resources/persons/:id');
 });
 
 app.controller('personsListController', function($scope, $rootScope, personService) {
@@ -60,7 +60,7 @@ app.controller('personsListController', function($scope, $rootScope, personServi
         });
     };
 
-    $scope.delteRow = function(row) {
+    $scope.deleteRow = function(row) {
         $rootScope.$broadcast('deltePerson', row.entity.id);
     };
 
@@ -85,3 +85,47 @@ app.controller('personsListController', function($scope, $rootScope, personServi
     });
 });
 
+app.controller('personsFormController', function($scope, $rootScope, personService) {
+
+    $scope.clearForm = function() {
+        $scope.person = null;
+
+        document.getElementById('imageUrl').value = null;
+
+        $scope.personForm.$setPristine();
+
+        $rootScope.$broadcast('clear');
+    };
+
+    $scope.updatePerson = function() {
+        personService.save($scope.person).$promise.then(
+            function(){
+                $rootScope.$broadcast('refreshGrid');
+                $rootScope.$broadcast('personSaved');
+                $scope.clearForm();
+            },
+
+            function(){
+                $rootScope.$broadcast('error');
+            }
+        );
+    };
+
+    $scope.$on('deltePerson', function(event, id) {
+        personService.delete({ id: id }).$promise.then(
+            function() {
+                $rootScope.$broadcast('refreshGrid');
+                $rootScope.$broadcast('personDeleted');
+                $scope.clearForm();
+            },
+
+            function(){
+                $rootScope.$broadcast('error');
+            }
+        );
+    });
+
+    $scope.$on('personSelected', function(event, id){
+        $scope.person = personService.get({id: id});
+    });
+});
